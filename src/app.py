@@ -13,8 +13,10 @@ class ReduceSumLayer(tf.keras.layers.Layer):
         return tf.reduce_sum(inputs, axis=1)
 
 # Load the saved LSTM model
-model = tf.keras.models.load_model('src/model/best_lstm_attention_autoencoder.keras')
-
+model = tf.keras.models.load_model(
+    'src/model/best_lstm_attention_autoencoder.keras',
+    custom_objects={'ReduceSumLayer': ReduceSumLayer}
+)
 # Load the saved GMM model
 gmm = joblib.load('src/model/gmm_model.joblib')
 
