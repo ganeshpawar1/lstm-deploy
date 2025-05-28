@@ -6,10 +6,10 @@ import joblib
 app = Flask(__name__)
 
 # Load the saved LSTM model
-model = tf.keras.models.load_model('model/best_lstm_attention_autoencoder.keras')
+model = tf.keras.models.load_model('src/model/best_lstm_attention_autoencoder.keras')
 
 # Load the saved GMM model
-gmm = joblib.load('model/gmm_model.joblib')
+gmm = joblib.load('src/model/gmm_model.joblib')
 
 @app.route('/')
 def index():
