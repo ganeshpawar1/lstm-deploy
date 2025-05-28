@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LSTM Model Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        textarea { width: 100%; height: 120px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>LSTM Model Prediction</h1>
+    <form id="predict-form">
+        <label for="inputData">Enter input (51 rows, 2 columns, comma-separated, one row per line):</label><br>
+        <textarea id="inputData" required></textarea><br>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('predict-form').onsubmit = async function(e) {
+            e.preventDefault();
+            const raw = document.getElementById('inputData').value.trim();
+            const rows = raw.split('\n').map(row => row.split(',').map(Number));
+            if (rows.length !== 51 || rows.some(r => r.length !== 2)) {
+                document.getElementById('result').textContent = 'Input must be 51 rows of 2 numbers.';
+                return;
+            }
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input: rows })
+            });
+            const data = await response.json();
+            document.getElementById('result').textContent = 'Predicted cluster: ' + data.cluster;
+        };
+    </script>
+</body>
+</html>
