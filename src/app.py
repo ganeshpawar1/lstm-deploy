@@ -5,6 +5,13 @@ import joblib
 
 app = Flask(__name__)
 
+@tf.keras.utils.register_keras_serializable()
+class ReduceSumLayer(tf.keras.layers.Layer):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    def call(self, inputs):
+        return tf.reduce_sum(inputs, axis=1)
+
 # Load the saved LSTM model
 model = tf.keras.models.load_model('src/model/best_lstm_attention_autoencoder.keras')
 
